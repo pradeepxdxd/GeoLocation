@@ -1,14 +1,15 @@
 import express from "express";
+import cors from 'cors'
 import { SuperfaceClient } from "@superfaceai/one-sdk";
 const app = express();
 app.set("trust proxy", true);
+app.use(cors());
 
 const sdk = new SuperfaceClient();
 
 async function run(ip) {
     // Load the profile
     const profile = await sdk.getProfile("address/ip-geolocation@1.0.1");
-    console.log(profile)
     // Use the profile
     const result = await profile.getUseCase("IpGeolocation").perform(
         {
@@ -37,6 +38,6 @@ app.get("/", async (req, res) => {
     res.send(await run(req.ip));
 });
 
-app.listen(3000, () => {
-    console.log("SERVER RUNNIHG AT PORT 3000");
+app.listen(3004, () => {
+    console.log("SERVER RUNNIHG AT PORT 3004");
 });
